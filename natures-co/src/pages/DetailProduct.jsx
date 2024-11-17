@@ -13,6 +13,13 @@ const DetailProduct = () => {
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);
 
+  const formatRupiah = (value) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+    }).format(value);
+  };
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -80,9 +87,6 @@ const DetailProduct = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (!product) return <p>Product not found</p>;
-
   const isOutOfStock = product.quantity === 0;
 
   return (
@@ -104,7 +108,7 @@ const DetailProduct = () => {
           <p className="text-gray-700">{product.description}</p>
 
           <p className="text-3xl font-bold text-green-600">
-            Rp {product.price}
+            {formatRupiah(product.price)}
           </p>
 
           {/* Kontrol Stok dan Quantity */}
