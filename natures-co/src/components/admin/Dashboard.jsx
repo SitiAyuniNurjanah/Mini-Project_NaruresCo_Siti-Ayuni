@@ -83,7 +83,7 @@ const Dashboard = () => {
     <Fragment>
       <div className="flex h-screen">
         <Sidebar />
-        <div className="flex-1 bg-5 p-8">
+        <div className="flex-1 bg-gray-100 p-8">
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
@@ -91,10 +91,10 @@ const Dashboard = () => {
           </div>
 
           {/* Welcome Section */}
-          <div className="bg-2 p-6 rounded-xl mb-8 flex items-center">
+          <div className="bg-4 p-6 rounded-xl mb-8 flex items-center">
             <div>
               <h2 className="text-3xl font-bold text-1">Hi, {adminName}</h2>
-              <p className="text-1 text-sm">
+              <p className="text-1 text-sm mt-2">
                 Kamu bisa menambah dan mengedit produk.
               </p>
             </div>
