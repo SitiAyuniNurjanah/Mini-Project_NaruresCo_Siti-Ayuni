@@ -7,7 +7,7 @@ import { FaTable, FaTableList } from "react-icons/fa6";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [setAdmin] = useState(null);
+  const [admin, setAdmin] = useState(null);
 
   const handleLogout = async () => {
     try {
