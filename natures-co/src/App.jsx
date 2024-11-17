@@ -10,6 +10,7 @@ import Catalog from "./pages/Catalog";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import DetailProduct from "./pages/DetailProduct";
 import CartPage from "./pages/Cart";
+import Dashboard from "./components/admin/Dashboard";
 
 
 const App = () => {
@@ -36,6 +37,15 @@ const App = () => {
           element={
             <ProtectedRoute>
               <CartPage />
+            </ProtectedRoute>
+          }
+        />
+
+<Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <Dashboard />
             </ProtectedRoute>
           }
         />
