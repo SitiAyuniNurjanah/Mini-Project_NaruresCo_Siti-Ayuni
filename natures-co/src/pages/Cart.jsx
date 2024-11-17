@@ -165,7 +165,7 @@ const CartPage = () => {
         </div>
       </div>
       <Footer />
-      <FloatingChat />
+      <FloatingChat/>
     </Fragment>
   );
 };
