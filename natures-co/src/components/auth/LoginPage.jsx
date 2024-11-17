@@ -12,32 +12,35 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-
+  
       if (error) {
         setErrorMessage("Invalid email or password. Please try again.");
         return;
       }
-
+  
+      // Ambil session setelah login
       const { data: { session } } = await supabase.auth.getSession();
-
+  
       if (session) {
+        console.log("User ID:", session.user.id); // Tampilkan ID pengguna di console
+  
         const { data: user, error: userError } = await supabase
           .from("users")
           .select("role")
           .eq("guid", session.user.id)
           .single();
-
+  
         if (userError || !user) {
           setErrorMessage("Unable to fetch user role. Please contact support.");
           return;
         }
-
+  
         const { role } = user;
         if (role === "admin") {
           navigate("/admin");
@@ -54,6 +57,7 @@ const LoginPage = () => {
       setErrorMessage("Something went wrong. Please try again.");
     }
   };
+  
 
   return (
     <div className="flex h-screen bg-[#f7f7f7] items-center justify-center">

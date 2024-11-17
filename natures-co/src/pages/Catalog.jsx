@@ -66,6 +66,20 @@ const Catalog = () => {
 
   const isLoading = categories.length === 0;
 
+  const formatRupiah = (value) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+    }).format(value);
+  };
+
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength
+      ? text.substring(0, maxLength) + "..."
+      : text;
+  };
+  
+
   return (
     <Fragment>
       <Header />
@@ -164,9 +178,14 @@ const Catalog = () => {
                     {product.name}
                   </h2>
                   <p className="text-xl font-bold text-green-600 mb-2">
-                    ${product.price}
+                    {formatRupiah(product.price)}
                   </p>
-                  <p className="text-sm text-gray-500">{product.description}</p>
+                  <p className="text-sm text-gray-500 mb-1">
+                    Stok: {product.quantity}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {truncateText(product.description, 50)}
+                  </p>
                 </div>
               </Link>
             </div>
