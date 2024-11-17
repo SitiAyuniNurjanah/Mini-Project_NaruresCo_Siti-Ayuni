@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { getAllProducts, deleteProduct } from '../services/sup-product';
-import HeaderAdmin from '../components/Sidebar';
+import { getAllProducts, deleteProduct } from '../../services/sup-product';
+import HeaderAdmin from './Sidebar';
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 
 const TableProduct = () => {
