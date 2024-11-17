@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoMdHome, IoIosCreate } from "react-icons/io";
 import { AiFillProduct } from "react-icons/ai";
 import supabase from "../../services/supabaseClient";
+import { FaTable } from "react-icons/fa6";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [admin, setAdmin] = useState(null);
+  const [setAdmin] = useState(null);
 
   const handleLogout = async () => {
     try {
@@ -17,6 +18,7 @@ const Sidebar = () => {
       console.error("Logout error:", error);
     }
   };
+  
   return (
     <div className="h-screen bg-1 flex flex-col justify-between w-64 p-5">
       {/* Logo */}
@@ -37,8 +39,16 @@ const Sidebar = () => {
             </span>{" "}
           </Link>
           <Link className="flex items-center" to="/table-product">
+          <FaTable className="text-white" size={30} />
+            <span className="text-white font-medium ml-2">Tabel Product</span>{" "}
+          </Link>
+          <Link className="flex items-center" to="/form-category">
             <AiFillProduct className="text-white" size={30} />
-            <span className="text-white font-medium ml-2">Tabel</span>{" "}
+            <span className="text-white font-medium ml-2">Category</span>{" "}
+          </Link>
+          <Link className="flex items-center" to="/table-category">
+          <FaTable className="text-white" size={30} />
+            <span className="text-white font-medium ml-2">Tabel Category</span>{" "}
           </Link>
         </ul>
       </div>
