@@ -3,14 +3,19 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import FloatingChat from "../components/layout/FloatingChat";
 import { Link } from "react-router-dom";
-import { getAllProducts } from '../services/sup-product';
+import { getAllProducts } from "../services/sup-product";
 import { useLocation } from "react-router-dom";
 import supabase from "../services/supabaseClient";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Pagination, Navigation } from "swiper/modules";
 
 const Catalog = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState('default');
-  const [selectedCategory, setSelectedCategory] = useState('Semua Kategori');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState("default");
+  const [selectedCategory, setSelectedCategory] = useState("Semua Kategori");
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const location = useLocation();
@@ -29,7 +34,7 @@ const Catalog = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data, error } = await supabase.from('category').select('*');
+      const { data, error } = await supabase.from("category").select("*");
       if (error) {
         console.error("Error fetching categories:", error);
         return;
@@ -45,13 +50,17 @@ const Catalog = () => {
 
   const filteredProducts = products
     .filter((product) => {
-      const matchesCategory = selectedCategory === 'Semua Kategori' || product.category_id === selectedCategory;
-      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory =
+        selectedCategory === "Semua Kategori" ||
+        product.category_id === selectedCategory;
+      const matchesSearch = product.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
       return matchesCategory && matchesSearch;
     })
     .sort((a, b) => {
-      if (sortOrder === 'highest') return b.price - a.price;
-      if (sortOrder === 'lowest') return a.price - b.price;
+      if (sortOrder === "highest") return b.price - a.price;
+      if (sortOrder === "lowest") return a.price - b.price;
       return 0;
     });
 
@@ -60,7 +69,6 @@ const Catalog = () => {
   return (
     <Fragment>
       <Header />
-
       {/* Section untuk Filter dan Search */}
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col sm:flex-row justify-between items-center p-4 bg-gray-100 rounded-lg shadow-md">
@@ -84,39 +92,53 @@ const Catalog = () => {
       </div>
 
       {/* Kategori */}
-      <section className="container mx-auto px-4 my-10" id="category">
-        <div className="text-black text-2xl my-6 text-center">
+      <section
+        className="my-30 mx-30 container mx-auto px-6 py-10 relative z-10"
+        id="category"
+      >
+        <div className="text-black text-2xl my-10 text-center">
           <h1 className="font-bold">Kategori</h1>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <div className="my-15 container mx-auto z-10">
           {isLoading ? (
-            Array.from({ length: 8 }).map((_, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center gap-2 animate-pulse"
-              >
-                <div className="rounded-full w-24 h-24 md:w-32 md:h-32 bg-gray-200"></div>
-                <div className="h-4 w-16 bg-gray-200 rounded"></div>
-              </div>
-            ))
+            <div className="flex gap-5">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col justify-center items-center gap-4"
+                ></div>
+              ))}
+            </div>
           ) : (
-            categories.map((item, index) => (
-              <div
-                key={index}
-                onClick={() => handleCategoryClick(item.id)}
-                className="flex flex-col items-center justify-center cursor-pointer"
-              >
-                <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-gray-300 shadow-lg hover:scale-105 transition-transform">
-                  <img
-                    className="w-full h-full object-cover"
-                    src={item.image_url}
-                    alt={item.name || 'image'}
-                  />
-                </div>
-                <p className="text-center mt-2 text-sm font-medium">{item.name}</p>
-              </div>
-            ))
+            <Swiper
+              modules={[Pagination, Navigation]}
+              spaceBetween={30} // Menentukan jarak antar slide
+              slidesPerView={3} // Menentukan berapa banyak item yang tampil di layar
+              breakpoints={{
+                640: { slidesPerView: 3, spaceBetween: 20 },
+                768: { slidesPerView: 4, spaceBetween: 30 },
+                1024: { slidesPerView: 6, spaceBetween: 40 },
+              }}
+            >
+              {categories.map((item, index) => (
+                <SwiperSlide key={index}>
+                  <div className="tooltip tooltip-top" data-tip={item.name}>
+                    <div className="flex-col justify-center items-center relative cursor-pointer z-0">
+                      <div className="relative w-40 h-40 md:w-48 md:h-48 p-6">
+                        <img
+                          onClick={() => handleCategoryClick(item.id)}
+                          className="mx-auto rounded-full object-cover w-full h-full shadow-lg"
+                          src={item.image_url}
+                          alt={item.name || "image"}
+                        />
+                        <p className="text-center mt-4 text-sm">{item.name}</p>
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           )}
         </div>
       </section>
@@ -138,7 +160,9 @@ const Catalog = () => {
                   />
                 </div>
                 <div className="mt-4">
-                  <h2 className="text-lg font-semibold text-gray-800 truncate">{product.name}</h2>
+                  <h2 className="text-lg font-semibold text-gray-800 truncate">
+                    {product.name}
+                  </h2>
                   <p className="text-xl font-bold text-green-600 mb-2">
                     ${product.price}
                   </p>
