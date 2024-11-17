@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { getAllProducts, deleteProduct } from '../../services/sup-product';
-import HeaderAdmin from './Sidebar';
+import { getAllProducts, deleteProduct } from '../services/sup-product';
+import HeaderAdmin from '../components/Sidebar';
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 
 const TableProduct = () => {
@@ -39,12 +39,20 @@ const TableProduct = () => {
     navigate('/form', { state: { product } });
   };
 
+  // Fungsi format harga menjadi Rupiah
+  const formatRupiah = (value) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+    }).format(value);
+  };
+
   return (
     <Fragment>
       <div className="flex h-screen">
         <HeaderAdmin /> {/* Sidebar di kiri */}
         <div className="flex-1 bg-5 p-8"> {/* TableProduct di kanan */}
-        <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
+          <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
 
           {successMessage && (
             <div className="alert alert-success shadow-lg mb-4">
@@ -61,6 +69,7 @@ const TableProduct = () => {
                   <th>Image</th>
                   <th>Name</th>
                   <th>Price</th>
+                  <th>Stock</th>
                   <th>Description</th>
                   <th>Actions</th>
                 </tr>
@@ -80,7 +89,8 @@ const TableProduct = () => {
                       </div>
                     </td>
                     <td>{product.name}</td>
-                    <td>${product.price.toFixed(2)}</td>
+                    <td>{formatRupiah(product.price)}</td>
+                    <td>{product.quantity}</td>
                     <td>{product.description}</td>
                     <td className="flex items-center space-x-2">
                       <button
