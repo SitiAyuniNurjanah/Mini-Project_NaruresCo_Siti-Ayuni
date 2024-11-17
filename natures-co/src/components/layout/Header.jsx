@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdCart } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
-import supabase from "../services/supabaseClient";
+import supabase from '../../services/supabaseClient';
 
 const Header = () => {
   const navigate = useNavigate();
