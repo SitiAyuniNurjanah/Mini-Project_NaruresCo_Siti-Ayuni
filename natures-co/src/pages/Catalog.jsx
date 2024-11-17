@@ -107,10 +107,10 @@ const Catalog = () => {
 
       {/* Kategori */}
       <section
-        className="my-30 mx-30 container mx-auto px-6 py-10 relative z-10"
+        className="my-30 mx-30 container mx-auto px-2 py-2 relative z-10"
         id="category"
       >
-        <div className="text-black text-2xl my-10 text-center">
+        <div className="text-black text-2xl mb-4 text-center">
           <h1 className="font-bold">Kategori</h1>
         </div>
 
@@ -127,8 +127,8 @@ const Catalog = () => {
           ) : (
             <Swiper
               modules={[Pagination, Navigation]}
-              spaceBetween={30} // Menentukan jarak antar slide
-              slidesPerView={3} // Menentukan berapa banyak item yang tampil di layar
+              spaceBetween={30} 
+              slidesPerView={3}
               breakpoints={{
                 640: { slidesPerView: 3, spaceBetween: 20 },
                 768: { slidesPerView: 4, spaceBetween: 30 },

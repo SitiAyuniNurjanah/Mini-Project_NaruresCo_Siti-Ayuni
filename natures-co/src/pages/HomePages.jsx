@@ -14,7 +14,7 @@ const HomePages = () => {
       <Header />
       <div className="bg-1 h-[500px] flex items-center justify-start w-full">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 p-8 mx-auto">
-          {/* Left Text Section */}
+          {/* tulisan sebelah kiri */}
           <div className="md:col-span-3 flex items-center">
             <div className="text-white text-lg w-full">
               <h2 className="text-5xl font-bold mb-2 text-white">
@@ -35,9 +35,8 @@ const HomePages = () => {
             </div>
           </div>
 
-          {/* Image Section */}
+          {/* gambar */}
           <div className="md:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-4 ml-128">
-            {/* New Left Image */}
             <div className="md:col-span-1">
               <img
                 src={gambar4}
@@ -45,7 +44,6 @@ const HomePages = () => {
                 className="h-[450px] w-full object-cover rounded-md"
               />
             </div>
-            {/* Left Image */}
             <div className="md:col-span-1">
               <img
                 src={gambar1}
@@ -53,9 +51,7 @@ const HomePages = () => {
                 className="h-[450px] w-full object-cover rounded-md"
               />
             </div>
-            {/* Right Section */}
             <div className="flex flex-col gap-4">
-              {/* Top Right Image */}
               <div className="rounded-md">
                 <img
                   src={gambar2}
@@ -63,7 +59,6 @@ const HomePages = () => {
                   className="h-[216px] w-full object-cover rounded-md"
                 />
               </div>
-              {/* Middle Right Image */}
               <div className="rounded-md">
                 <img
                   src={gambar3}
@@ -75,23 +70,6 @@ const HomePages = () => {
           </div>
         </div>
       </div>
-
-      {/* <div className="p-8 mb-4 mt-4">
-        <div className="card card-compact bg-base-100 w-96 shadow-xl">
-          <figure>
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes" />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title">Shoes!</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
-            <div className="card-actions justify-end">
-              <button className="btn btn-primary">Buy Now</button>
-            </div>
-          </div>
-        </div>
-      </div> */}
 
       <Footer />
       <FloatingChat />

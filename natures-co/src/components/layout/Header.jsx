@@ -54,6 +54,12 @@ const Header = () => {
             About
           </a>
           <a
+            href="/catalog"
+            className="btn btn-ghost text-1 font-medium text-taupe"
+          >
+            Product
+          </a>
+          <a
             href="/daily-tips"
             className="btn btn-ghost text-1 font-medium text-taupe"
           >

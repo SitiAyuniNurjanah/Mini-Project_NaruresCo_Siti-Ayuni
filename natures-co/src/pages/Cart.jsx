@@ -16,6 +16,13 @@ const CartPage = () => {
   const [shipping, setShipping] = useState("");
   const [payment, setPayment] = useState("");
 
+  const formatRupiah = (value) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+    }).format(value);
+  };
+  
   const isFormValid =
     name.trim() !== "" &&
     phone.trim() !== "" &&
@@ -45,13 +52,13 @@ const CartPage = () => {
         try {
           const { data, error } = await supabase
             .from("cart")
-            .select("*, product (*)") 
-            .eq("user_id", userId); 
+            .select("*, product (*)")
+            .eq("user_id", userId);
 
           if (error) {
             console.error("Error fetching cart items:", error.message);
           } else {
-            setCartItems(data || []); 
+            setCartItems(data || []);
             updateSubtotal(data);
           }
         } catch (error) {
@@ -77,9 +84,7 @@ const CartPage = () => {
   // Fungsi untuk memilih/deselect item dari keranjang
   const handleSelectItem = (cartId) => {
     const updatedItems = cartItems.map((item) =>
-      item.id === cartId
-        ? { ...item, selected: !item.selected } 
-        : item
+      item.id === cartId ? { ...item, selected: !item.selected } : item
     );
     setCartItems(updatedItems);
     updateSubtotal(updatedItems);
@@ -90,7 +95,7 @@ const CartPage = () => {
     const updatedItems = cartItems.map((item) => {
       if (item.id === cartId) {
         const newQuantity = Math.max(item.quantity + change, 1);
-  
+
         // Update stok produk di database
         const updateStock = async () => {
           try {
@@ -99,25 +104,31 @@ const CartPage = () => {
               .select("quantity")
               .eq("id", item.product_id)
               .single();
-  
+
             if (fetchError) {
-              console.error("Error fetching product stock:", fetchError.message);
+              console.error(
+                "Error fetching product stock:",
+                fetchError.message
+              );
               return;
             }
-            const updatedStock = product.quantity - (newQuantity - item.quantity);
+            const updatedStock =
+              product.quantity - (newQuantity - item.quantity);
             if (updatedStock < 0) {
-
               alert("Insufficient stock available!");
               return;
             }
-  
+
             const { error: updateError } = await supabase
               .from("product")
               .update({ quantity: updatedStock })
               .eq("id", item.product_id);
 
             if (updateError) {
-              console.error("Error updating product stock:", updateError.message);
+              console.error(
+                "Error updating product stock:",
+                updateError.message
+              );
               return;
             }
             console.log("Stock updated successfully!");
@@ -125,7 +136,7 @@ const CartPage = () => {
             console.error("Error updating stock:", error.message);
           }
         };
-  
+
         updateStock();
         return {
           ...item,
@@ -137,14 +148,11 @@ const CartPage = () => {
     setCartItems(updatedItems);
     updateSubtotal(updatedItems);
   };
-  
+
   // Fungsi untuk menghapus item dari keranjang saat di checkout
   const handleRemoveFromCart = async (cartId) => {
     try {
-      const { error } = await supabase
-        .from("cart")
-        .delete()
-        .eq("id", cartId);
+      const { error } = await supabase.from("cart").delete().eq("id", cartId);
 
       if (error) {
         console.error("Error removing from cart:", error.message);
@@ -266,7 +274,7 @@ const CartPage = () => {
                         <h2 className="font-semibold text-lg">
                           {item.product.name}
                         </h2>
-                        <p className="text-gray-500">Rp {item.product.price}</p>
+                        <p className="text-gray-500">{formatRupiah(item.product.price)}</p>
                       </div>
                       <div className="flex items-center">
                         <button
@@ -303,7 +311,7 @@ const CartPage = () => {
             <div className="border-t border-gray-300 py-4">
               <div className="flex justify-between mb-2">
                 <span className="text-gray-500">Subtotal</span>
-                <span>Rp {subtotal}</span>
+                <span>{formatRupiah(subtotal)}</span>
               </div>
             </div>
 

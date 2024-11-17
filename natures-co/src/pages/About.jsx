@@ -102,7 +102,7 @@ const About = () => {
               Anda turut berkontribusi dalam menjaga kelestarian bumi dan
               menciptakan masa depan yang lebih hijau.
             </p>
-            <blockquote className="border-l-4 border-yellow-400 pl-4 italic text-gray-700">
+            <blockquote className="border-l-4 italic text-gray-700">
               “Dengan setiap produk ramah lingkungan yang Anda pilih, kita
               bersama-sama membangun masa depan yang lebih hijau dan sehat untuk
               generasi mendatang.”
