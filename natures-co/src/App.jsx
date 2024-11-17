@@ -7,6 +7,8 @@ import EcoTips from "./pages/EcoTips";
 import LoginPage from "./components/auth/LoginPage";
 import RegisterPage from "./components/auth/RegisterPage";
 import Catalog from "./pages/Catalog";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
+import DetailProduct from "./pages/DetailProduct";
 
 
 const App = () => {
@@ -20,6 +22,14 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/catalog" element={<Catalog />} />
+        <Route
+          path="/detail/:productId"
+          element={
+            <ProtectedRoute>
+              <DetailProduct />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
     </Router>

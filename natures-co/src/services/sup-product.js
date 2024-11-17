@@ -15,18 +15,16 @@ export const getAllProducts = async () => {
     }
 };
 
-
-
 // Fungsi untuk mengunggah gambar
 export const uploadImage = async (file) => {
     try {
         const fileName = `${Date.now()}-${file.name}`;
         const { data, error } = await supabase.storage
-            .from("products") // Nama bucket
+            .from("products")
             .upload(fileName, file);
 
         const publicUrl = `https://aimgohnijdamdikgoswf.supabase.co/storage/v1/object/public/products/${fileName}`;
-        console.log("Data upload:", data); // Debug log
+        console.log("Data upload:", data);
         if (error) {
             console.error("Error saat upload gambar:", error.message);
             throw error;
@@ -37,7 +35,7 @@ export const uploadImage = async (file) => {
             throw new Error("Gagal mendapatkan URL publik.");
         }
 
-        console.log("Public URL yang dihasilkan:", publicUrl); // Debug log
+        console.log("Public URL yang dihasilkan:", publicUrl);
         return publicUrl;
     } catch (err) {
         console.error("Detail error upload:", err);
