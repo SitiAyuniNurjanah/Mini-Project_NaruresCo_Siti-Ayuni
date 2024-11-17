@@ -9,6 +9,7 @@ import RegisterPage from "./components/auth/RegisterPage";
 import Catalog from "./pages/Catalog";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import DetailProduct from "./pages/DetailProduct";
+import CartPage from "./pages/Cart";
 
 
 const App = () => {
@@ -27,6 +28,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <DetailProduct />
+            </ProtectedRoute>
+          }
+        />
+          <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <CartPage />
             </ProtectedRoute>
           }
         />
