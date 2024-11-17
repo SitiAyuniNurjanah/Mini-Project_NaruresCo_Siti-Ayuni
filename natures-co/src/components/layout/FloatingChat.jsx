@@ -34,7 +34,6 @@ const FloatingChat = () => {
         setIsChatOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -79,19 +78,19 @@ const FloatingChat = () => {
 
   return (
     <div>
-      {/* Button */}
+      {/* Chat Icon Button */}
       <div
         onClick={toggleChat}
-        className="fixed bottom-6 right-6 bg-1 text-white p-4 rounded-full shadow-lg hover:bg-primary-focus cursor-pointer transition duration-300"
+        className="fixed bottom-6 right-6 bg-1 text-white p-4 rounded-full shadow-lg hover:bg-primary-focus cursor-pointer transition duration-300 z-50"
       >
         {isChatOpen ? <FiX size={24} /> : <FiMessageSquare size={24} />}
       </div>
 
-      {/* Chat */}
+      {/* Chat Window */}
       {isChatOpen && (
         <div
-          ref={chatWindowRef} // Reference the chat window to detect clicks outside
-          className="fixed bottom-20 right-6 w-[70vh] h-[70vh] bg-2 text-neutral-content rounded-lg shadow-lg p-4 flex flex-col"
+          ref={chatWindowRef}
+          className="fixed bottom-20 right-6 w-[70vh] h-[70vh] bg-2 text-neutral-content rounded-lg shadow-lg p-4 flex flex-col z-50"
         >
           <div className="flex justify-between items-center border-b border-gray-600 pb-2 mb-2">
             <h2 className="text-lg text-neutral font-bold">Q&A Product</h2>
@@ -105,7 +104,6 @@ const FloatingChat = () => {
                   msg.isUser ? "chat-end" : "chat-start"
                 } mb-2`}
               >
-                {/* Chat Bubble */}
                 <div className="chat-bubble bg-1">
                   <ReactMarkdown>{msg.text}</ReactMarkdown>
                 </div>
@@ -114,7 +112,6 @@ const FloatingChat = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* button send */}
           <form
             onSubmit={handleSend}
             className="flex items-center space-x-2 mt-auto"
@@ -130,7 +127,7 @@ const FloatingChat = () => {
               type="submit"
               className="text-1 p-2 rounded-full hover:bg-primary-focus transition duration-300"
             >
-              <MdSend size={25}/>
+              <MdSend size={25} />
             </button>
           </form>
         </div>
