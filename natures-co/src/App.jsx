@@ -6,6 +6,7 @@ import Contact from "./pages/Contact";
 import EcoTips from "./pages/EcoTips";
 import LoginPage from "./components/auth/LoginPage";
 import RegisterPage from "./components/auth/RegisterPage";
+import Catalog from "./pages/Catalog";
 
 
 const App = () => {
@@ -18,6 +19,8 @@ const App = () => {
         <Route path="/daily-tips" element={<EcoTips />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/catalog" element={<Catalog />} />
+
       </Routes>
     </Router>
   )
