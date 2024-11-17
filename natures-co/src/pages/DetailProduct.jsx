@@ -49,42 +49,41 @@ const DetailProduct = () => {
 
   const handleAddToCart = async () => {
     if (!userId) {
-      alert("Please log in to add to cart.");
       return;
     }
 
-    console.log("User ID:", userId); // Pastikan ID ini valid dan ada di tabel users
+    const totalPrice = product.price * quantity;
+
+    console.log("User ID:", userId);
     console.log("Product ID:", product.id);
     console.log("Quantity:", quantity);
+    console.log("Total Price:", totalPrice);
 
     try {
-      console.log(userId)
-
-
       const { data, error } = await supabase.from("cart").insert([
         {
-          user_id: userId, // Pastikan ini integer
+          user_id: userId,
           product_id: product.id,
           quantity: quantity,
+          price: totalPrice,
           created_at: new Date().toISOString(),
         },
       ]);
 
       if (error) {
         console.error("Error adding to cart:", error.message);
-        alert("Failed to add to cart");
       } else {
         console.log("Data added to cart:", data);
-        alert("Product added to cart!");
       }
     } catch (error) {
       console.error("Error adding to cart:", error.message);
-      alert("Error adding product to cart");
     }
   };
 
   if (loading) return <p>Loading...</p>;
   if (!product) return <p>Product not found</p>;
+
+  const isOutOfStock = product.quantity === 0;
 
   return (
     <div>
@@ -105,31 +104,38 @@ const DetailProduct = () => {
           <p className="text-gray-700">{product.description}</p>
 
           <p className="text-3xl font-bold text-green-600">
-            ${product.price.toFixed(2)}
+            Rp {product.price}
           </p>
 
-          {/* Kontrol Quantity */}
-          <div className="flex items-center space-x-4 mt-4">
-            <button
-              onClick={() => handleQuantityChange(-1)}
-              className="px-4 py-2 bg-gray-200 rounded"
-            >
-              -
-            </button>
-            <span className="text-xl">{quantity}</span>
-            <button
-              onClick={() => handleQuantityChange(1)}
-              className="px-4 py-2 bg-gray-200 rounded"
-            >
-              +
-            </button>
-          </div>
+          {/* Kontrol Stok dan Quantity */}
+          {isOutOfStock ? (
+            <p className="text-red-600 font-bold">Stok Habis</p>
+          ) : (
+            <div className="flex items-center space-x-4 mt-4">
+              <button
+                onClick={() => handleQuantityChange(-1)}
+                className="px-4 py-2 bg-gray-200 rounded"
+              >
+                -
+              </button>
+              <span className="text-xl">{quantity}</span>
+              <button
+                onClick={() => handleQuantityChange(1)}
+                className="px-4 py-2 bg-gray-200 rounded"
+              >
+                +
+              </button>
+            </div>
+          )}
 
           {/* Tombol Add to Cart */}
           <div className="flex space-x-4 mt-4">
             <button
               onClick={handleAddToCart}
-              className="bg-yellow-600 text-white px-5 py-2 rounded"
+              className={`bg-yellow-600 text-white px-5 py-2 rounded ${
+                isOutOfStock ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isOutOfStock}
             >
               Add to Cart
             </button>
