@@ -15,6 +15,7 @@ import FormProduct from "./components/admin/FormProduct";
 import TableProduct from "./components/admin/TableProduct";
 import SuccessPage from "./pages/SuccessPages";
 import FormCategory from "./components/admin/FormCategory";
+import TableCategory from "./components/admin/TableCategory";
 
 const App = () => {
   return (
@@ -73,6 +74,14 @@ const App = () => {
           element={
             <ProtectedRoute allowedRoles={['admin']}>
               <FormCategory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/table-category"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <TableCategory />
             </ProtectedRoute>
           }
         />
