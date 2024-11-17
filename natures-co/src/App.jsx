@@ -12,6 +12,7 @@ import DetailProduct from "./pages/DetailProduct";
 import CartPage from "./pages/Cart";
 import Dashboard from "./components/admin/Dashboard";
 import FormProduct from "./components/admin/FormProduct";
+import TableProduct from "./components/admin/TableProduct";
 
 
 const App = () => {
@@ -56,6 +57,15 @@ const App = () => {
           element={
             <ProtectedRoute allowedRoles={['admin']}>
               <FormProduct />
+            </ProtectedRoute>
+          }
+        />
+
+<Route
+          path="/table-product"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <TableProduct />
             </ProtectedRoute>
           }
         />
