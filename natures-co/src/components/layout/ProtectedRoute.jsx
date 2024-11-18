@@ -10,21 +10,24 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
 
   useEffect(() => {
     const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
+      const { data: { session }, error } = await supabase.auth.getSession();
+    
+      if (error) {
+        console.error("Error fetching session:", error.message);
+        return;
+      }
+    
       if (session) {
         setIsAuthenticated(true);
-
-        // Ambil data role pengguna dari database
-        const { data: user, error } = await supabase
+    
+        const { data: user, userError } = await supabase
           .from("users")
           .select("role")
           .eq("guid", session.user.id)
           .single();
-
-        if (error || !user) {
+    
+        if (userError) {
+          console.error("Error fetching user data:", userError.message);
           setUserRole(null);
         } else {
           setUserRole(user.role);
@@ -32,9 +35,10 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
       } else {
         setIsAuthenticated(false);
       }
-
+    
       setLoading(false);
     };
+    
 
     checkSession();
 
