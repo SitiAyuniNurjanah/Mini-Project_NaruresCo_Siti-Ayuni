@@ -13,7 +13,7 @@ import CartPage from "./pages/Cart";
 import Dashboard from "./components/admin/Dashboard";
 import FormProduct from "./components/admin/FormProduct";
 import TableProduct from "./components/admin/TableProduct";
-import SuccessPage from "./pages/SuccessPages";
+// import SuccessPage from "./pages/SuccessPages";
 import FormCategory from "./components/admin/FormCategory";
 import TableCategory from "./components/admin/TableCategory";
 
@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/catalog" element={<Catalog />} />
-        <Route path="/success" element={<SuccessPage />} />
+        {/* <Route path="/success" element={<SuccessPage />} /> */}
         <Route
           path="/detail/:productId"
           element={

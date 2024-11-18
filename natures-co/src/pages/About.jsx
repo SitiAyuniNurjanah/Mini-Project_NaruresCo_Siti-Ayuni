@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import FloatingChat from "../components/layout/FloatingChat";
@@ -9,59 +9,67 @@ import gambar4 from "../assets/images/gambar8.jpg";
 import gambar5 from "../assets/images/gambar9.jpg";
 import { TbTargetArrow } from "react-icons/tb";
 import { BiSolidCheckShield } from "react-icons/bi";
-import { PiUsersFourFill } from 'react-icons/pi';
+import { PiUsersFourFill } from "react-icons/pi";
 
+// Data untuk Image Grid
+const images = [gambar1, gambar2, gambar3, gambar4];
+
+// Data untuk Features
+const features = [
+  {
+    title: "Tim Profesional",
+    description:
+      "Kami hadir dengan tim berpengalaman untuk menyediakan produk ramah lingkungan terbaik.",
+    icon: <PiUsersFourFill className="w-8 h-8 text-white" />,
+  },
+  {
+    title: "Berorientasi pada Keberlanjutan",
+    description:
+      "Fokus kami adalah memilih produk yang mendukung gaya hidup berkelanjutan.",
+    icon: <TbTargetArrow className="w-8 h-8 text-white" />,
+  },
+  {
+    title: "Jaminan Dampak Positif",
+    description:
+      "Setiap pilihan produk kami berkontribusi pada bumi yang lebih hijau.",
+    icon: <BiSolidCheckShield className="w-8 h-8 text-white" />,
+  },
+];
 
 const About = () => {
   return (
-    <Fragment>
+    <>
       <Header />
       <div className="bg-3">
         {/* Header Section */}
-        <div className="text-center py-16">
+        <header className="text-center py-16">
           <h1 className="text-5xl font-bold text-2">About us</h1>
           <p className="mt-4 text-2 max-w-2xl mx-auto">
             Bersama kami, buatlah pilihan bijak untuk mendukung masa depan yang
             lebih hijau melalui produk-produk yang peduli pada alam.
           </p>
-        </div>
+        </header>
 
-        {/* Image Section */}
-        <div className="relative flex justify-center mb-20">
+        {/* Image Grid Section */}
+        <section className="relative flex justify-center mb-20">
           <div className="absolute flex gap-4 -top-10">
-            <div className="w-52 h-52 bg-white rounded-lg shadow-lg overflow-hidden">
-              <img
-                src={gambar1}
-                alt="Image 1"
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <div className="w-52 h-52 bg-white rounded-lg shadow-lg overflow-hidden">
-              <img
-                src={gambar2}
-                alt="Image 2"
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <div className="w-52 h-52 bg-white rounded-lg shadow-lg overflow-hidden">
-              <img
-                src={gambar3}
-                alt="Image 3"
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <div className="w-52 h-52 bg-white rounded-lg shadow-lg overflow-hidden">
-              <img
-                src={gambar4}
-                alt="Image 4"
-                className="object-cover w-full h-full"
-              />
-            </div>
+            {images.map((image, index) => (
+              <div
+                key={index}
+                className="w-52 h-52 bg-white rounded-lg shadow-lg overflow-hidden"
+              >
+                <img
+                  src={image}
+                  alt={`Image ${index + 1}`}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            ))}
           </div>
-        </div>
+        </section>
 
         {/* Content Section 1 */}
-        <div className="bg-white py-16 h-[350px] px-8">
+        <section className="bg-white py-16 h-[350px] px-8">
           <h2 className="text-3xl font-bold text-center mb-8 mt-16">
             Pilihan Bijak untuk Masa Depan yang Lebih Hijau
           </h2>
@@ -80,10 +88,10 @@ const About = () => {
               yang membawa dampak nyata.
             </p>
           </div>
-        </div>
+        </section>
 
         {/* Image and Quote Section */}
-        <div className="flex flex-col md:flex-row items-center gap-8 py-16 px-8 bg-4">
+        <section className="flex flex-col md:flex-row items-center gap-8 py-16 px-8 bg-4">
           <div className="w-full md:w-1/2">
             <img
               src={gambar5}
@@ -108,10 +116,10 @@ const About = () => {
               generasi mendatang.”
             </blockquote>
           </div>
-        </div>
+        </section>
 
         {/* Features Section */}
-        <div className="bg-white py-16 px-8">
+        <section className="bg-white py-16 px-8">
           <h2 className="text-3xl font-bold text-center mb-8">
             Kami Membantu Anda Memilih Produk Berkelanjutan
           </h2>
@@ -120,47 +128,22 @@ const About = () => {
             berkelanjutan dan berkualitas.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-3 rounded-full flex items-center justify-center">
-                <PiUsersFourFill className="w-8 h-8 text-white"/>
+            {features.map((feature, index) => (
+              <div key={index} className="text-center">
+                <div className="w-16 h-16 mx-auto mb-4 bg-3 rounded-full flex items-center justify-center">
+                  {feature.icon}
+                </div>
+                <h4 className="text-xl font-semibold mb-2">{feature.title}</h4>
+                <p className="text-gray-600">{feature.description}</p>
               </div>
-              <h4 className="text-xl font-semibold mb-2">Tim Profesional</h4>
-              <p className="text-gray-600">
-                Kami hadir dengan tim berpengalaman untuk menyediakan produk
-                ramah lingkungan terbaik.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-3 rounded-full flex items-center justify-center">
-                <TbTargetArrow className="w-8 h-8 text-white"/>
-              </div>
-              <h4 className="text-xl font-semibold mb-2">
-                Berorientasi pada Keberlanjutan
-              </h4>
-              <p className="text-gray-600">
-                Fokus kami adalah memilih produk yang mendukung gaya hidup
-                berkelanjutan.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-3 rounded-full flex items-center justify-center">
-               <BiSolidCheckShield className="w-8 h-8 text-white"/>
-              </div>
-              <h4 className="text-xl font-semibold mb-2">
-                Jaminan Dampak Positif
-              </h4>
-              <p className="text-gray-600">
-                Setiap pilihan produk kami berkontribusi pada bumi yang lebih
-                hijau.
-              </p>
-            </div>
+            ))}
           </div>
-        </div>
+        </section>
       </div>
 
       <Footer />
-      <FloatingChat/>
-    </Fragment>
+      <FloatingChat />
+    </>
   );
 };
 

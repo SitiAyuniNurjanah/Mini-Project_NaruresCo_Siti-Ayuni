@@ -1,4 +1,5 @@
-import React, { Fragment, useState, useRef } from "react";
+import React, { Fragment, useRef } from "react";
+import Swal from "sweetalert2"; // Import SweetAlert2
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import FloatingChat from "../components/layout/FloatingChat";
@@ -14,15 +15,20 @@ import {
 } from "react-icons/fa";
 
 const Contact = () => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const formRef = useRef();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    // Tampilkan notifikasi SweetAlert2
+    Swal.fire({
+      title: "Success!",
+      text: "Your message has been sent successfully.",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
+
+    // Reset form setelah submit
     formRef.current.reset();
-    setTimeout(() => {
-      setIsSubmitted(false);
-    }, 5000);
   };
 
   return (
@@ -81,14 +87,9 @@ const Contact = () => {
                   Send Message
                 </button>
               </form>
-
-              {isSubmitted && (
-                <div className="mt-4 p-4 bg-green-100 text-green-800 border border-green-400 rounded">
-                  <p>Message successfully sent!</p>
-                </div>
-              )}
             </div>
 
+            {/* Contact Info */}
             <div>
               <h2 className="text-2xl font-semibold mb-4">Get In Touch</h2>
               <p className="text-gray-600 mb-6">
