@@ -7,7 +7,12 @@ import { MdSend } from "react-icons/md";
 
 const FloatingChat = () => {
   const [dataProduct, setDataProduct] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    {
+      text: "Hallo sahabat Natures! Ada yang bisa Nana bantu? Nana bisa menjawab pertanyaan mengenai produk ramah lingkungan, tips, atau informasi produk kami.",
+      isUser: false,
+    },
+  ]);
   const [message, setMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const messagesEndRef = useRef(null);
@@ -64,11 +69,16 @@ const FloatingChat = () => {
       const foundProducts = dataProduct.filter((product) =>
         message.toLowerCase().includes(product.name.toLowerCase())
       );
-      modifiedMessage = `${message} Berikut adalah detail produk yang Anda minta: ${JSON.stringify(
+      modifiedMessage = `User bertanya tentang produk ini: ${JSON.stringify(
         foundProducts
-      )}`;
+      )}. Berikan informasi produk tersebut kepada pengguna.`;
     } else {
-      modifiedMessage = `Saya adalah Chasper, asisten AI. Tolong balas dalam bahasa Indonesia: ${message}`;
+      modifiedMessage = `Halo AI! Jawablah pertanyaan berikut ini hanya jika berkaitan dengan:
+- Produk ramah lingkungan
+- Tips dari halaman web kami
+- Informasi produk yang tersedia
+
+Jika pertanyaan tidak relevan, arahkan pengguna untuk menghubungi admin. Pertanyaan pengguna: "${message}"`;
     }
 
     const aiResponseText = await generateChatResponse(modifiedMessage, apiKey);

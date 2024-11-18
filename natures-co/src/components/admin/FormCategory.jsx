@@ -3,13 +3,14 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createCategory, updateCategory, uploadImage } from "../../services/sup-category";
 import Sidebar from "./Sidebar";
+import Swal from "sweetalert2";
 
 const FormCategory = () => {
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const category = location.state?.category || null;
+  const { category = null } = location.state || {}; // Destructuring untuk category
 
   useEffect(() => {
     if (category) {
@@ -18,45 +19,71 @@ const FormCategory = () => {
     }
   }, [category, setValue]);
 
-  const handleImageChange = (e) => {
+  // Validasi file gambar
+  const validateAndSetImageFile = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      console.log("File yang dipilih:", file);
-      if (!file.type.startsWith("image/")) {
-        console.log("Harap unggah file gambar yang valid.");
-        e.target.value = null;
-      }
+    if (file && !file.type.startsWith("image/")) {
+      Swal.fire({
+        icon: "error",
+        title: "File tidak valid",
+        text: "Harap unggah file gambar yang valid.",
+      });
+      e.target.value = null; // Reset input file jika file tidak valid
     }
   };
 
+  // Fungsi untuk menangani pengiriman form
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      let imageUrl = category?.image_url || null;
-      if (data.image_url && data.image_url[0]) {
-        imageUrl = await uploadImage(data.image_url[0], "category");
-        console.log("URL gambar berhasil diunggah:", imageUrl);
-      }
+      const imageUrl = await handleImageUpload(data);
 
-      const payload = {
-        ...data,
-        image_url: imageUrl,
-      };
+      const payload = { ...data, image_url: imageUrl };
 
       if (category) {
         await updateCategory(category.id, payload);
-        console.log("Kategori berhasil diperbarui!");
-        navigate("/table-category", {
-          state: { message: "Kategori berhasil diperbarui!" },
-        });
+        showSuccessMessage("Kategori berhasil diperbarui!");
       } else {
         await createCategory(payload);
-        console.log("Kategori berhasil dibuat!");
+        showSuccessMessage("Kategori berhasil dibuat!");
         reset();
       }
     } catch (err) {
       console.error("Gagal memproses kategori:", err);
+      showErrorMessage("Terjadi kesalahan saat memproses kategori.");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // Fungsi untuk mengunggah gambar jika ada
+  const handleImageUpload = async (data) => {
+    if (data.image_url && data.image_url[0]) {
+      return await uploadImage(data.image_url[0], "category");
+    }
+    return category?.image_url || null;
+  };
+
+  // Menampilkan pesan sukses
+  const showSuccessMessage = (message) => {
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil",
+      text: message,
+    }).then(() => {
+      navigate("/table-category", {
+        state: { message },
+      });
+    });
+  };
+
+  // Menampilkan pesan error
+  const showErrorMessage = (message) => {
+    Swal.fire({
+      icon: "error",
+      title: "Gagal",
+      text: message,
+    });
   };
 
   return (
@@ -117,15 +144,13 @@ const FormCategory = () => {
                   id="image_url"
                   className="file-input file-input-bordered w-full"
                   {...register("image_url")}
-                  onChange={handleImageChange}
+                  onChange={validateAndSetImageFile}
                 />
               </div>
 
               <button
                 type="submit"
-                className={`btn bg-1 text-white hover:bg-3 w-full py-3 mt-4 ${
-                  loading ? "opacity-50" : ""
-                }`}
+                className={`btn bg-1 text-white hover:bg-3 w-full py-3 mt-4 ${loading ? "opacity-50" : ""}`}
                 disabled={loading}
               >
                 {loading ? "Menyimpan..." : category ? "Perbarui Kategori" : "Buat Kategori"}

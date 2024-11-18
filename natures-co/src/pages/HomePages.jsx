@@ -28,7 +28,7 @@ const HomePages = () => {
               </p>
               <Link
                 to="/catalog"
-                className="btn btn-active bg-5 text-neutral rounded-full px-6 py-2 w-80 mt-5 hover:text-neutral hover:bg-white"
+                className="btn btn-active bg-white text-neutral rounded-full px-6 py-2 w-80 mt-5 hover:text-neutral hover:bg-2"
               >
                 Lihat Katalog
               </Link>

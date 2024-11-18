@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import gambar1 from "../../assets/images/gambar12.png";
 import gambar2 from "../../assets/images/gambar11.png";
 import { useNavigate } from "react-router-dom";
-import supabase from '../../services/supabaseClient'
+import supabase from "../../services/supabaseClient";
+import { FiEye, FiEyeOff } from "react-icons/fi"; // Import ikon mata
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -11,6 +12,8 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State untuk toggle password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State untuk toggle confirm password visibility
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -34,7 +37,7 @@ const RegisterPage = () => {
 
       const { error: userInsertError } = await supabase.from("users").insert([
         {
-          guid: data.user.id, 
+          guid: data.user.id,
           name,
           email,
           role: "user",
@@ -85,11 +88,16 @@ const RegisterPage = () => {
           <div className="text-red-500 text-center mb-4">{errorMessage}</div>
         )}
         {successMessage && (
-          <div className="text-green-500 text-center mb-4">{successMessage}</div>
+          <div className="text-green-500 text-center mb-4">
+            {successMessage}
+          </div>
         )}
         <form className="w-full max-w-sm" onSubmit={handleRegister}>
           <div className="mb-4">
-            <label className="block text-gray-600 text-sm font-medium mb-2" htmlFor="name">
+            <label
+              className="block text-gray-600 text-sm font-medium mb-2"
+              htmlFor="name"
+            >
               Name
             </label>
             <input
@@ -103,7 +111,10 @@ const RegisterPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-600 text-sm font-medium mb-2" htmlFor="email">
+            <label
+              className="block text-gray-600 text-sm font-medium mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -116,12 +127,15 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-600 text-sm font-medium mb-2" htmlFor="password">
+          <div className="mb-4 relative">
+            <label
+              className="block text-gray-600 text-sm font-medium mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"} // Toggle antara text dan password
               id="password"
               placeholder="Enter your password"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
@@ -129,8 +143,14 @@ const RegisterPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <div
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer mt-4 text-gray-200"
+            >
+              {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+            </div>
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label
               className="block text-gray-600 text-sm font-medium mb-2"
               htmlFor="confirm-password"
@@ -138,7 +158,7 @@ const RegisterPage = () => {
               Confirm Password
             </label>
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"} // Toggle antara text dan password
               id="confirm-password"
               placeholder="Confirm your password"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
@@ -146,6 +166,12 @@ const RegisterPage = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
+            <div
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer mt-4 text-gray-200"
+            >
+              {showConfirmPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+            </div>
           </div>
           <button
             type="submit"
@@ -153,7 +179,10 @@ const RegisterPage = () => {
           >
             Register
           </button>
-          <a href="/login" className="block text-gray-500 text-sm font-medium mt-3 mb-3">
+          <a
+            href="/login"
+            className="block text-gray-500 text-sm font-medium mt-3 mb-3"
+          >
             Sudah punya akun?{" "}
             <span className="text-blue-500 text-sm font-medium">Login</span>
           </a>

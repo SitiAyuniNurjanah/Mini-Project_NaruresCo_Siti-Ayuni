@@ -1,60 +1,67 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdHome, IoIosCreate } from "react-icons/io";
 import { AiFillProduct } from "react-icons/ai";
-import supabase from "../../services/supabaseClient";
 import { FaTable, FaTableList } from "react-icons/fa6";
+import supabase from "../../services/supabaseClient";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [admin, setAdmin] = useState(null);
 
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      setAdmin(null);
       navigate("/");
     } catch (error) {
       console.error("Logout error:", error);
     }
   };
-  
+
+  // Data menu
+  const menuItems = [
+    { to: "/admin", label: "Dashboard", icon: <IoMdHome size={30} /> },
+    { to: "/form", label: "Form Product", icon: <IoIosCreate size={30} /> },
+    { to: "/table-product", label: "Product", icon: <FaTable size={30} /> },
+    {
+      to: "/form-category",
+      label: "Form Category",
+      icon: <AiFillProduct size={30} />,
+    },
+    {
+      to: "/table-category",
+      label: "Category",
+      icon: <FaTableList size={30} />,
+    },
+  ];
+
   return (
     <div className="h-screen bg-1 flex flex-col justify-between w-64 p-5">
       {/* Logo */}
-      <div>
-        <div className="flex items-center mb-10">
+      <div className="mb-6">
+        <div className="flex items-center">
           <p className="text-white ml-2 text-3xl font-bold">Nature`sCo</p>
         </div>
-        {/* Menu Items */}
-        <ul className="space-y-6 p-2">
-          <Link className="flex items-center" to="/admin">
-            <IoMdHome className="text-white" size={30} />
-            <span className="text-white font-medium ml-2">Dashboard</span>{" "}
-          </Link>
-          <Link className="flex items-center" to="/form">
-            <IoIosCreate className="text-white" size={30} />
-            <span className="text-white font-medium ml-2">
-              Form Product
-            </span>{" "}
-          </Link>
-          <Link className="flex items-center" to="/table-product">
-          <FaTable className="text-white" size={30} />
-            <span className="text-white font-medium ml-2">Product</span>{" "}
-          </Link>
-          <Link className="flex items-center" to="/form-category">
-            <AiFillProduct className="text-white" size={30} />
-            <span className="text-white font-medium ml-2">Form Category</span>{" "}
-          </Link>
-          <Link className="flex items-center" to="/table-category">
-          <FaTableList className="text-white" size={30} />
-            <span className="text-white font-medium ml-2">Category</span>{" "}
-          </Link>
-        </ul>
       </div>
 
+      {/* Menu Items */}
+      <ul className="space-y-4 p-1 flex-grow">
+        {" "}
+        {menuItems.map((item, index) => (
+          <li key={index}>
+            <Link className="flex items-center" to={item.to}>
+              <span className="text-white">{item.icon}</span>
+              <span className="text-white font-medium ml-2">{item.label}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      {/* Logout Button */}
       <div className="bg-2 p-3 rounded-lg flex justify-center">
-        <button onClick={handleLogout} className="h-3 w-32 flex items-center justify-center text-1 font-bold rounded-lg">
+        <button
+          onClick={handleLogout}
+          className="h-3 w-32 flex items-center justify-center text-1 font-bold rounded-lg"
+        >
           Logout
         </button>
       </div>

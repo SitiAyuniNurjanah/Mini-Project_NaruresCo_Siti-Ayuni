@@ -1,51 +1,56 @@
 import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import supabase from "../../services/supabaseClient";
 import gambar1 from "../../assets/images/gambar12.png";
 import gambar2 from "../../assets/images/gambar11.png";
-import { useNavigate } from "react-router-dom";
-import supabase from '../../services/supabaseClient'
+import { FiEye, FiEyeOff } from "react-icons/fi"; // Import ikon mata
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State untuk toggle password visibility
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirectTo =
+    new URLSearchParams(location.search).get("redirect") || "/";
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-  
+
       if (error) {
         setErrorMessage("Invalid email or password. Please try again.");
         return;
       }
-  
-      // Ambil session setelah login
-      const { data: { session } } = await supabase.auth.getSession();
-  
+
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       if (session) {
-        console.log("User ID:", session.user.id); // Tampilkan ID pengguna di console
-  
         const { data: user, error: userError } = await supabase
           .from("users")
           .select("role")
           .eq("guid", session.user.id)
           .single();
-  
+
         if (userError || !user) {
           setErrorMessage("Unable to fetch user role. Please contact support.");
           return;
         }
-  
+
         const { role } = user;
         if (role === "admin") {
           navigate("/admin");
         } else if (role === "user") {
-          navigate("/");
+          navigate(redirectTo); // Kembali ke halaman sebelumnya
         } else {
           setErrorMessage("Unknown role. Please contact support.");
         }
@@ -57,7 +62,6 @@ const LoginPage = () => {
       setErrorMessage("Something went wrong. Please try again.");
     }
   };
-  
 
   return (
     <div className="flex h-screen bg-[#f7f7f7] items-center justify-center">
@@ -99,7 +103,7 @@ const LoginPage = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label
               className="block text-gray-600 text-sm font-medium mb-2"
               htmlFor="password"
@@ -107,7 +111,7 @@ const LoginPage = () => {
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"} // Toggle antara text dan password
               id="password"
               placeholder="Enter your password"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
@@ -115,6 +119,12 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <div
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer mt-4 text-gray-200"
+            >
+              {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+            </div>
           </div>
           <button
             type="submit"

@@ -18,13 +18,15 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
         setIsAuthenticated(true);
 
         // Ambil data role pengguna dari database
-        const { data: user } = await supabase
+        const { data: user, error } = await supabase
           .from("users")
           .select("role")
           .eq("guid", session.user.id)
           .single();
 
-        if (user) {
+        if (error || !user) {
+          setUserRole(null);
+        } else {
           setUserRole(user.role);
         }
       } else {
@@ -50,14 +52,19 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="spinner" />
+        <span>Loading...</span>
+      </div>
+    );
   }
 
   if (
     !isAuthenticated ||
     (allowedRoles.length > 0 && !allowedRoles.includes(userRole))
   ) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to={`/login?redirect=${window.location.pathname}`} replace />;
   }
 
   return children;
